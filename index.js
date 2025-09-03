@@ -49,6 +49,7 @@ const verifyFirBaseToken = async (req, res, next) => {
     try {
         const decoded = await admin.auth().verifyIdToken(token)
         req.decoded = decoded;
+       
         next();
     }
     catch (error) {
@@ -230,7 +231,10 @@ async function run() {
 
         //get all user for admin role
         app.get('/all-user', verifyFirBaseToken, verifyAdmin, async (req, res) => {
-            const result = await usersCollection.find().toArray();
+            const userEmail = req.decoded?.email;
+            const filter = { email: { $ne: userEmail } };
+            const result = await usersCollection.find(filter).toArray();
+            
             res.send(result);
         })
 
