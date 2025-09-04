@@ -235,7 +235,7 @@ async function run() {
             const filter = { email: { $ne: userEmail } };
             const result = await usersCollection.find(filter).toArray();
 
-            res.send(result);
+            res.send(result || []);
         })
 
         //user role update
@@ -265,7 +265,7 @@ async function run() {
         //manage product get data
         app.get('/all-product', verifyFirBaseToken, verifyAdmin, async (req, res) => {
             const result = await productsCollection.find().toArray();
-            res.send(result);
+            res.send(result || []);
         })
 
         //single product delete by admin
@@ -329,10 +329,7 @@ async function run() {
         app.get('/all-oders', verifyFirBaseToken, verifyAdmin, async (req, res) => {
             try {
                 const result = await odersCollection.find().toArray();
-                if (!result || result.length === 0) {
-                    return res.status(404).send({ message: 'No orders found' });
-                }
-                res.send(result);
+                res.send(result || []);
             } catch (error) {
                 res.status(500).send({ message: "Something went wrong while fetching orders" });
             }
