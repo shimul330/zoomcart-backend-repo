@@ -82,7 +82,7 @@ npm run dev
 | ------ | ---------- | ----------------------------- |
 | `POST` | `/contact` | Send message via contact form |
 
-🔐 Middleware
+##🔐 Middleware
 
 verifyFirebaseToken → Checks Firebase JWT
 
@@ -90,9 +90,7 @@ verifyTokenEmail → Ensures email from token matches params
 
 verifyAdmin → Ensures the user is admin
 
-📡 Deployment
-
-You can deploy this backend on:
-
-Vercel
+##📡 Deployment
+ You can deploy this backend on:
+ .Vercel
 
