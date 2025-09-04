@@ -49,7 +49,7 @@ const verifyFirBaseToken = async (req, res, next) => {
     try {
         const decoded = await admin.auth().verifyIdToken(token)
         req.decoded = decoded;
-       
+
         next();
     }
     catch (error) {
@@ -234,7 +234,7 @@ async function run() {
             const userEmail = req.decoded?.email;
             const filter = { email: { $ne: userEmail } };
             const result = await usersCollection.find(filter).toArray();
-            
+
             res.send(result);
         })
 
@@ -316,10 +316,13 @@ async function run() {
 
         // GET user orders by email
         app.get('/users/order/:email', verifyFirBaseToken, verifyTokenEmail, async (req, res) => {
-            const email = req.params.email;
-            const result = await odersCollection.find({ user: email }).toArray();
-            if (!result || result.length === 0) return res.status(404).send({ message: 'No orders found' });
-            res.send(result);
+            try {
+                const email = req.params.email;
+                const result = await odersCollection.find({ user: email }).toArray();
+                res.send(result || []);
+            } catch (err) {
+                res.status(500).send({ message: 'Server error fetching orders' });
+            }
         });
 
         //GET user all data by admin oderManage
